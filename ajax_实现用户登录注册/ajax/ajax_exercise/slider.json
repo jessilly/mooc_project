@@ -1,0 +1,13 @@
+{
+	"code":0,
+	"slider":[
+	{
+		"linkUrl":"http://m.imooc.com/act/share",
+		"picUrl":"img/weixin.png"
+	},
+	{
+		"linkUrl":"http://1m.imooc.com/act/share",
+		"picUrl":"img/qq.png"
+	}
+	]
+}

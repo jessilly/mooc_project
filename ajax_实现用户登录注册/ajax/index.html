@@ -1,0 +1,149 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>注册登录界面</title>
+        <link rel="stylesheet" src="text/css" href="css/index.css"/>
+    </head>
+    <body>
+        <div class="register">
+            <div class="title" id="title">
+                <span>登 录</span>
+                <span class="current">注 册</span>
+            </div>
+            <div class="form">
+                    <div class="number">
+                        <span>+86</span>
+                        <input type="text" id="user" placeholder="请输入注册手机号" autocomplete="off"/>
+                        <i id="user_icon"></i>
+                        <p class="info" id="user_info"></p>
+                    </div>
+                    <div class="pwd">
+                        <input type="text" id="pwd" placeholder="请设置密码"/>
+                        <i id="pwd_icon"></i>
+                        <p class="info" id="pwd_info"></p>
+                    </div>
+            </div>
+            <div class="button">
+                <a href="#" id="sigup-btn" class="btn show">注 册</a>
+                <a href="#" id="login-btn" class="btn">登 录</a>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/ajax.js"></script>
+        <script type="text/javascript">
+            var user = document.getElementById("user"),
+                pwd = document.getElementById("pwd"),
+                sigup = document.getElementById("sigup-btn"),
+                login = document.getElementById("login-btn"),
+                titles = document.getElementById("title").getElementsByTagName("span"),
+                  //console.log(titles);
+                  //console.log(titles)
+                userInfo = document.getElementById("user_info"),
+                userIcon = document.getElementById("user_icon");
+                pwdInfo = document.getElementById("pwd_info"),
+                pwdIcon = document.getElementById("pwd_icon"),
+                userReg = /^1[3578]\d{9}$/,
+                pwdReg = /^\w{5,12}$/,
+                isRepeat = false;//记录用户名是否被占用
+           
+             //检测用户
+             function checkUser(){
+                //验证手机号是否有效
+                var userVal = user.value;
+                // console.log(userVal);
+                //检测手机号是否有效
+                if(!userReg.test(userVal)){
+                    userInfo.innerHTML = "手机号无效";
+                    userIcon.className = 'no';
+                }else{
+                    userInfo.innerHTML = "";
+                    userIcon.className = '';
+                    //发起请求
+                    $.ajax({
+                        url:'http://localhost/register/server/isUserRepeat.php',
+                        data:{username:userVal},
+                        success:function(data){
+                            if(data.code == 1){
+                                userIcon.className = 'ok';
+                                isRepeat = false;
+                            }else if(data.code  == 0){
+                                userIcon.className = 'no';
+                                userInfo.innerHTML = data.msg;
+                                isRepeat = true;
+                            }else{
+                                userInfo.innerHTML = '检测失败，请重试...'
+                            }
+                        }
+                    })
+                }
+                
+            }
+             //检测密码
+             function checkPwd(){
+                 var pwdVal = pwd.value;
+                if(!pwdReg.test(pwdVal)){
+                    pwdInfo.innerHTML = '请输入5,12位的字母、数字及下划线';
+                    pwdIcon.className = 'no';
+                }else{
+                    pwdInfo.innerHTML = '';
+                    pwdIcon.className = 'ok';
+                }
+             }
+             //注册
+             function register(){
+                 //如果手机号有效且未被注册，同时密码合法
+                if(userReg.test(user.value) && (userPwd.test(pwd.value)) && !isRepeat){
+                    // console.log('ok');
+                    //发起请求，实现注册
+                    $.ajax({
+                        url: "http://localhost/register/server/ergister.php",
+                        method: 'post',
+                        //username 和 password 为后端规定的名字
+                        data: {username: user.value, password: pwd.value},
+                        success:function(data){
+                            // console.log('data');
+                            // alert("注册成功，请登录！");
+                            //清空文本框
+                            user.value = "";
+                            pwd.value = "";
+                            showLogin();
+                        },
+                        error: function(){
+                            pwdInfo.innerHTML = "注册失败，请重试~"
+                        }
+                    })
+                }
+             }
+            
+             //显示登录
+             function showLogin(){
+                //载入登录界面，登录高亮显示
+                titles[0].className = "current";
+                titles[1].className = "";
+                login.className = "show";
+                sigup.className = "";
+             }
+             //显示注册
+             function showSign(){
+                //载入注册界面，注册高亮显示
+                titles[0].className = "";
+                titles[1].className = "current";
+                login.className = "";
+                sigup.className = "show";
+             }
+            //绑定事件，检测用户的有效性及是否注册过   
+            user.addEventListener('blur',checkUser,false);
+            //绑定事件，检测密码的有效性
+            pwd.addEventListener('blur',checkPwd,false);
+
+            //注册
+            sigup.addEventListener('click',register,false);
+            //登录高亮
+            titles[0].addEventListener('click',showLogin,false);
+            //注册高亮
+            titles[1].addEventListener('click',showSign,false);
+
+
+        </script>
+    </body>
+</html>

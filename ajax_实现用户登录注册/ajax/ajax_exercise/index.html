@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ajax_exercise</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .banner{
+            width: 600px;
+            height: 338px;
+            overflow: hidden;
+            position: relative;
+            margin: 50px auto;
+        }
+        .banner a{
+            display: block;
+            float: left;
+            width: 600px;
+            height: 338px;
+        }
+        .banner a img {
+            display: block;
+            width: 600px;
+            height: 338px;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner" id="banner"></div>
+    <div class="banner" id="banner_jq"></div>
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+    
+//第一步，创建xhr对象，即创建一个异步调用对象
+//封装通用的XHR对象，兼容各个版本
+function createXHR(){
+    //判断浏览器是否将XMLHttpRequest作为本地对象实现，针对IE7+,firefox,opera等
+    if(typeof XMLHttpRequest != "undefined"){
+        return new XMLHttpRequest();
+    }
+}
+var xhr = createXHR();
+var data = null;
+//第三步，设置HTTP请求状态变化的函数
+//onreadystatechange在readstatechange属性发生改变时触发
+xhr.onreadystatechange = function(){
+    //为4时异步调用成功，响应内容解析完成，可以在客户端调用
+    if(xhr.readyState === 4){
+        if(xhr.status >= 200 && xhr.status<300 || xhr.status === 304){
+            //第五步：获取异步调服务器返回的数据
+            data = JSON.parse(xhr.responseText);
+            // console.log(data)
+            renderDataDom();
+        }
+    }
+}
+// console.log(xhr);
+//第二步，创建一个新的http请求
+xhr.open("get","slider.json",true);
+
+//第四步：发送请求
+xhr.send(null);
+
+
+//第六步：使用JS和dom实现局部刷新,渲染数据
+function renderDataDom(){
+    var img = data.slider,i,
+    len = img.length,
+    banner = document.getElementById("banner"),
+    str = "";
+    for(i=0;i<len;i++){
+        // console.log(img[i]);
+        //方法一：字符串拼接
+        str += '<a href="'+ img[i].linkUrl +　'"><img src="' +img[i].picUrl + '"></a>';    
+        //方法二：通过create、append DOM 节点（）
+    }
+    banner.innerHTML = str;   
+    console.log(str);
+}
+   
+   
+
+//jquery的$.ajax()
+$.ajax({
+    url: "slider.json",//請求地址
+    type:"post",//請求方式
+    async:true,//異步
+    dataType:"json",//數據格式
+    success:function(imgData){ //請求成功的回調
+        console.log(imgData)
+    }
+
+
+})
+   </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+*{
+    margin:0;
+    padding: 0;
+}
+header{
+    width: 100%;
+    height: 50px;
+    /* background: url(../images/logo.png) no-repeat 10%; */
+}
+header nav{
+    float: right;
+}
+header nav a{ 
+    text-decoration: none;
+    color: #808080;
+    line-height: 50px;
+    margin-right: 20px;
+}
+/* 清除浮动 */
+header::after{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+.main .top img{
+    width: 100%;
+    height: 600px;
+}
+.main .top .top_layer{
+    position: absolute;
+    width: 100%;
+    height: 600px;
+    top: 50px;
+    left: 0;
+    background-color: #000;
+    opacity: .5;
+}
+.main .top .wrap{
+    position: absolute;
+    width: 500px;
+    height:300px;
+    z-index: 2;
+    /* background-color: blue; */
+    top: 50%;
+    margin-top: -150px;
+    left: 50%;
+    margin-left: -250px;
+    
+}
+.wrap p{
+    text-align: center;
+    font-family: "微软雅黑";
+    font-weight: bolder;
+    padding-top: 100px;
+    color: #fff;
+    font-size: 45px;
+}
+button{
+    width: 200px;
+    height: 60px;
+    margin-top: 50px;
+    color: #fff;
+    background-color: #F5704F;
+    font-family: "微软雅黑";
+    text-align: center;
+    font-weight: bolder;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-left: 150px;
+}
+
+
+.main .middle{
+    width: 1000px;
+    margin: 0 auto;
+}
+.main .middle .top div{
+    float: left;
+    width: 33%;
+    padding-top: 50px;
+    text-align: center;
+    /* display:flex;
+    padding: 100px 100px 50px;
+    justify-content: space-between;
+    justify-content: space-around;
+    text-align: center; */
+}
+.main .middle .top::after{
+    content: '';
+    height: 0;
+    display: block;
+    width: 100%;
+    clear:both;
+}
+.main .middle .top img{
+    width: 64px;
+    height: 64px;
+}
+.main .middle .top p{
+    font-size: 20px;
+    color: #7D7C7F;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+.main .middle .middle{
+    text-align: center;
+    padding-bottom: 50px;
+}
+.main .middle .bottom img{
+    width: 200px;
+    height:200px;
+    float: left;
+    padding-left: 100px;
+}
